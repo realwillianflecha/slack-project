@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import VerificationInput from "react-verification-input"
 import { toast } from "sonner";
+import { useEffect, useMemo } from "react";
 
 interface JoinPageProps {
     params: {
@@ -24,6 +25,14 @@ const JoinPage = ({ params }: JoinPageProps) => {
 
     const { data, isLoading } = useGetWorkspaceInfo( { id: workspaceId } );
     const { mutate, isPending } = useJoin();
+
+    const isMember = useMemo(() => data?.isMember, [data?.isMember]);
+
+    useEffect(() => {
+        if (isMember) {
+            router.push(`/workspace/${workspaceId}`);
+        }
+    }, [isMember, router, workspaceId]);
 
     const handleComplete = (value: string) => {
         mutate({workspaceId, joinCode: value}, {
