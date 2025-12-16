@@ -58,9 +58,16 @@ const Editor = ({
 
         const options: QuillOptions = {
             theme: "snow",
+            placeholder:  placeholderRef.current,
         };
 
-        new Quill(editorContainer, options);
+        const quill = new Quill(editorContainer, options);
+        quillRef.current = quill;
+        quillRef.current.focus();
+
+        if (innerRef) {
+            innerRef.current = quill;
+        }
 
         return () => {
             if (container) {
